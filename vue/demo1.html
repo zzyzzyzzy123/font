@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+</head>
+<script src="vue.min.js"></script>
+<body>
+<div id="app">
+    <p>///45{{msg}}5454</p>
+    <!--解决闪缩问题，网速慢慢，引包放在后面闪烁-->
+    <!--111会被替换-->
+    <h3 v-text="msg">11111</h3>
+    <div >{{msg2}}</div>
+    <!--v-bind用于绑定的属性 v-on用来绑定事件-->
+    <input type="button" value="按钮1" v-bind:title="mytitle + '1123132'" v-on:click="show">
+    <!--:等于v-bind-->
+    <input type="button" value="按钮2" :title="mytitle + '1123132'">
+</div>
+
+
+<div id="zzy"></div>
+<script>
+    var vue=new Vue({
+        el: "#app",//控制哪个区域
+        data:{ //存放el中需要的数据
+            msg: "hello word",//通过vue提供的指令，直接渲染到页面上
+            msg2: "<h1>没有</h1>",//普通文本，不能被解析
+            mytitle:"我的title"
+        },
+        methods:{ //定义当前vue所有实例可用方法
+            show: function () {
+                alert("hello");
+            }
+        }
+    })
+var zzy=document.getElementById("zzy")
+    zzy.innerHTML="<h1>456456</h1> ";
+</script>
+
+</body>
+</html>

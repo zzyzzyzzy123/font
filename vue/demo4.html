@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="vue.min.js"></script>
+<body>
+<div id="app">
+    <input type="button" value="toggle" @click="flag=!flag">
+    <!--v-if每次都会删除元素重新创建-->
+    <!---->
+    <h3 v-if="flag">v-if显示1</h3>
+    <!--v-show每次不会重新进行dom的删除与创建，只会加display：none-->
+    <h3 v-show="flag">v-if显示2</h3>
+    <!--vue过滤器-->
+    <p>{{msg|msgFormat('I','am')|test}}</p>
+</div>
+</body>
+<script>
+    Vue.filter('msgFormat',(msg,str1,str2)=>{
+        console.log(str1)
+        console.log(str2)
+       return msg.replace('person','pig');
+    })
+    Vue.filter('test',(msg)=>{
+        return msg+" do you remember me";
+    })
+    var vm=new Vue({
+        el:"#app",
+        data:{
+            flag:false,
+            msg:"I am a person, not pig"
+        },
+        method:{
+
+        }
+    })
+</script>
+</html>

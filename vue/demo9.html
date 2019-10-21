@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+    <meta charset="utf-8" name="viewport" content="width=device-width,initial-scale=1, user-scalable=no"/>
+    <title>首页</title>
+</head>
+<script src="jquery-3.3.1.min.js"></script>
+<script src="bootstrap/js/bootstrap.js"></script>
+<script src="vue.min.js"></script>
+<link rel="stylesheet" href="animate.css">
+<body>
+<style>
+    .ball {
+        background-color: red;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+    }
+
+    .v-enter,
+    .v-leave-to {
+        opacity: 0%;
+        transform: translateY(50px);
+    }
+
+    .v-enter-active,
+    .v-leave-active {
+        transition: all 0.8s ease;
+    }
+    .changecolor:hover{
+        background-color:hotpink;
+        transition: all 0.8s ease   ;
+    }
+    /*离开元素后面的元素渐渐移动*/
+    .v-move{
+        transition: all 2s ease   ;
+    }
+    .v-leave-active {
+        position: absolute;
+    }
+</style>
+<div id="app">
+    <button class="btn btn-default" @click="flag=!flag">click</button>
+    <transition @before-enter="beforeEnter"
+                @enter="enter"
+                @after-enter="afterEnter">
+        <div class="ball" v-show="flag"></div>
+    </transition>
+
+</div>
+<!--列表动画-->
+<!--列表动画是通过v-for渲染出来的不能使用transition，使用transitionGroup-->
+<div id="app2">
+    <div>
+        <label class="form-inline">
+            Id:
+            <input type="text" v-model:value="id" class="form-control">
+            name:
+            <input type="text" v-model:value="name" class="form-control">
+        </label>
+        <button class="btn btn-default" @click="add">添加</button>
+    </div>
+
+    <!--列表动画是通过v-for渲染出来的不能使用transition，使用transitionGroup,拖过要渲染必须设置key属性-->
+  <!--  <ul class="list-group">-->
+        <!--appear页面展示是加上效果,tag是将此标签渲染成什么tag，默认是span-->
+        <transition-group appear tag="ul" class="list-group">
+            <li class="list-group-item changecolor" style="width: 100%" v-for="(item,i) in list" :key="item.id" @click="del(i)">{{i+1}} :{{item.name}}</li>
+        </transition-group>
+   <!-- </ul>-->
+</div>
+
+</body>
+<script>
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            flag: false,
+        },
+        methods: {
+            beforeEnter(el) {
+                //设置动画起始位置
+                el.style.transform = "translate(0,0)";
+            },
+            enter(el, done) {
+                //过度，不管是width还是height都行
+                el.offsetWidth;
+                //小球结束时位置
+                el.style.transform = "translate(150px,450px)";
+                el.style.transition = "all 1s ease";
+                //after-enter的立即引用，会马上执行
+                done();
+            },
+            afterEnter(el) {
+                this.flag = false;
+            }
+        }
+    })
+
+    var vm2 = new Vue({
+        el: "#app2",
+        data: {
+            id: "",
+            name: "",
+            list: [
+                {id: 1, name: '赵高'},
+                {id: 2, name: "秦桧"},
+                {id: 3, name: "魏忠贤"}
+            ]
+        },
+        methods: {
+            add() {
+                var obj = {};
+                obj.id = this.id;
+                obj.name = this.name;
+                this.list.push(obj)
+            },
+            del(i){
+                this.list.splice(i,1);
+                console.log(i)
+            }
+        },
+
+
+    })
+</script>
+</html>

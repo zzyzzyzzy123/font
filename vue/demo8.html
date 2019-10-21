@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+    <meta charset="utf-8" name="viewport" content="width=device-width,initial-scale=1, user-scalable=no"/>
+    <title>首页</title>
+</head>
+<script src="jquery-3.3.1.min.js"></script>
+<script src="bootstrap/js/bootstrap.js"></script>
+<script src="vue.min.js"></script>
+<link rel="stylesheet" href="animate.css">
+<body>
+<style>
+    .v-enter,
+    .v-leave-to{
+        opacity: 0%;
+        transform: translateX(50px);
+    }
+    .v-enter-active,
+    .v-leave-active{
+        transition: all 0.5s ease;
+    }
+
+    .my-enter,
+    .my-leave-to{
+        opacity: 0%;
+        transform: translateY(50px);
+    }
+    .my-enter-active,
+    .my-leave-active{
+        transition: all 0.5s ease;
+    }
+
+</style>
+<div id="app">
+    <input type="button" value="toggle" @click="flag=!flag">
+    <transition>
+        <h3 v-show="flag">这是一个H3标签</h3>
+    </transition>
+
+    <input type="button" value="toggle" @click="flag=!flag">
+    <transition name="my">
+        <h2 v-show="flag">这是一个H2标签</h2>
+    </transition>
+
+    <input type="button" value="toggle" @click="flag=!flag">
+    <transition enter-active-class="animated bounceIn" leave-active-class="animated bounceOut">
+        <h2 v-show="flag">这是一个H2标签</h2>
+    </transition>
+
+    <!--duration设置入场离场时间-->
+    <!--<input type="button" value="toggle" @click="flag=!flag" :duration="2000">
+    <transition enter-active-class=" bounceIn" leave-active-class=" bounceOut">
+        <h2 v-show="flag" class="animated">这是一个H2标签</h2>
+    </transition>-->
+
+    <input type="button" value="toggle" @click="flag=!flag">
+    <transition enter-active-class="animated bounceIn" leave-active-class="animated bounceOut" :duration="{enter:200,leave:400}">
+        <h2 v-show="flag">这是一个H2标签</h2>
+    </transition>
+</div>
+<script>
+    var vm=new Vue({
+        el:"#app",
+        data:{
+            flag:false
+        }
+    })
+</script>
+
+</body>
+</html>

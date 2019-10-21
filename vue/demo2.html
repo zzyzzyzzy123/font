@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>跑马灯</title>
+</head>
+<script src="vue.min.js"></script>
+<body>
+<div id="app">
+    <h4>{{msg}}</h4>
+    <button @click="begin()">开始</button>
+    <button @click="end()"> 停止</button>
+</div>
+
+</body>
+<script>
+    var app = new Vue({
+        el: "#app",
+        data: {
+            msg: "蜻蜓队长跑马灯----",
+            interval: null
+        },
+        methods: {
+            begin() {
+                if (this.interval != null)
+                    return;
+                //可以使用 _this=this
+                this.interval = window.setInterval( ()=> {
+                    var result = this.msg;
+                    var begin = result.slice(0, 1);
+                    var end = result.slice(1,result.length)
+                    this.msg = end + begin;
+
+                }, 500);
+            },
+            end() {
+                window.clearInterval(this.interval);
+                this.interval = null;
+
+            }
+        }
+    })
+
+</script>
+</html>

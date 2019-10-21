@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="vue.min.js"></script>
+<!--this.$http.get-->
+<script src="axios.min.js"></script>
+<body>
+
+<div id="app">
+    <button @click="getInfo">click</button>
+</div>
+</body>
+<script>
+
+    var vm=new Vue({
+        el:"#app",
+        data:{},
+        methods:{
+            getInfo(){
+                axios.get("http://localhost/blog/getblogspecies").then(function (result) {
+                    console.log(result.body)
+                }).catch((e)=>{
+                    console.log(e)
+                })
+            },
+        }
+
+    })
+</script>
+</html>

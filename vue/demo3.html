@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="vue.min.js"></script>
+<body>
+<style>
+    .red {
+        color: red;
+    }
+
+    .active {
+        letter-spacing: 0.5em;
+    }
+
+    .love {
+        font-family: fantasy;
+    }
+
+</style>
+<!--    <div id="app" @click="outter()">
+        &lt;!&ndash;.stop用来阻止冒泡&ndash;&gt;
+        <button @click.stop="inner()">點擊</button>
+    </div>-->
+<!--捕获事件，先执行-->
+<!--<div id="app" @click.capture="outter()">
+    &lt;!&ndash;.stop用来阻止冒泡&ndash;&gt;
+    <button @click.stop="inner()">點擊</button>
+</div>-->
+<!--<div id="app" @click="outter()">
+    &lt;!&ndash;阻止默认行为&ndash;&gt;
+    <a @click.prevent="inner()" href="demo1.html">點擊</a>
+</div>-->
+<!--只有在点击当前元素时才会触发事件-->
+<!--<div id="app" @click.self="outter()">
+    &lt;!&ndash;.stop用来阻止冒泡&ndash;&gt;
+    <button @click.stop="inner()">點擊</button>
+</div>-->
+<!--
+<div id="app" @click="outter()">
+    &lt;!&ndash;.once只触发一次&ndash;&gt;
+    <button @click.once="inner()">點擊</button>
+</div>
+-->
+<div id="app">
+    <!--.once只触发一次-->
+    <input type="text" v-model:value="msg">
+    <!--flag取data的值-->
+    <h1 :class="['red','active',flag?'love':'']">这是h1标签</h1>
+    <h1 :class="['red','active',{'love':flag}]">这是h1标签</h1>
+    <h1 :class="{red:false,active:true,love:true}">这是h1标签</h1>
+    <h1 :class="myclass">这是h1标签</h1>
+    <!--无序键值对集合-->
+    <h1 :style="{color:'red','font-weight':200}">这是h1标签</h1>
+    <h1 :style="mystyle1">这是h1标签</h1>
+    <h1 :style="[mystyle1,mystyle2 ]">这是h1标签</h1>
+    <div v-for="(val,key,num) in stu">
+        <h1>名字 {{ val }}</h1>
+        <h1>性别  {{key}}</h1>
+        <h1>专业  {{num}}</h1>
+    </div>
+</div>
+</body>
+<script>4
+var vue = new Vue({
+    el: "#app",
+    data: {
+        msg: "我的",
+        flag: true,
+        myclass: {red: false, active: true, love: true},
+        mystyle1: {color: 'red', 'font-weight': 200},
+        mystyle2: {fontStyle: 'italic'},
+        stu: {
+            xs_43:{name:'zzy',sex:'男',major:'电信'}
+    },
+        methods: {
+            inner() {
+                alert("inner");
+            }
+            ,
+            outter() {
+                alert("outer")
+            }
+        }
+    }
+})
+</script>
+</html>

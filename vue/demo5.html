@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+    <meta charset="utf-8" name="viewport" content="width=device-width,initial-scale=1, user-scalable=no"/>
+    <title>首页</title>
+</head>
+<script src="jquery-3.3.1.min.js"></script>
+<script src="bootstrap/js/bootstrap.js"></script>
+<script src="vue.min.js"></script>
+<body>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Panel title</h3>
+    </div>
+    <div class="panel-body">
+        Panel body
+    </div>
+</div>
+
+<div id="app">
+    <div class="panel panel-primary  ">
+        <div class="panel-heading">
+            <h3 class="panel-title">商品查询</h3>
+        </div>
+        <div class="panel-body form-inline">
+            <label>Id</label>
+            <input type="text" class="form-control" v-model:value="id"/>
+
+            <label>Name</label>
+            <input type="text" class="form-control" v-model:value="goodsName" @keyup.enter="add()">
+
+            <button class="btn btn-primary" @click="add">添加</button>
+
+            <label>查询</label>
+            <input type="text" class="form-control" v-model:value="keyWords" v-focus v-color="'blue'" id="search">
+
+        </div>
+    </div>
+
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr v-for="item in search(keyWords)" :key="item.id">
+            <td>{{item.id}}</td>
+            <td v-text="item.goodsName"></td>
+            <td>{{item.date|dateFilter}}</td>
+            <td><a style="cursor: pointer" @click="del(item.id)">删除</a></td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<div id="app2">
+    <span v-fontweight="11" v-fontsize="51">{{msg}}</span>
+</div>
+
+</body>
+<script>
+
+
+    $(function () {
+        //console.log($("#search")[0])
+       // $("#search")[0].focus();
+    })
+    //自定义事件
+    Vue.directive('focus',{
+        bind: function(el){//绑定时执行一次，此时元素并未插入到页面中
+
+        },
+        insert:function(el){//插入到dom时执行一次，元素插入到页面中时
+            el.focus();
+        },
+        update:function(el){//每次vnode更新时，执行
+
+        }
+    })
+    Vue.directive('color',{
+        bind: function(el,binding){//绑定时执行一次，此时元素并未插入到页面中
+            //console.log(binding);
+            el.style.color=binding.value;
+        },
+        insert:function(el){//插入到dom时执行一次，元素插入到页面中时
+            el.focus();
+        },
+        update:function(el){//每次vnode更新时，执行
+
+        }
+    })
+
+    //过滤器
+    Vue.filter("dateFilter",function(date){
+        var year=date.getFullYear();
+        var month=date.getMonth().toString().padStart(2,'0');
+        var day=date.getDay().toString().padStart(2,'0');
+
+        return `${year}年${month}月${day}日`;
+    })
+
+
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            id: "",
+            keyWords:"",
+            goodsName: "",
+            list: [
+                {id: 1, goodsName: '面包',date:new Date()},
+                {id: 2, goodsName: '口香糖',date:new Date()}
+            ],
+        },
+        methods: {
+            add() {
+                var good = {};
+                good.id = this.id;
+                good.goodsName = this.goodsName;
+                good.date=new Date();
+                this.list.push(good);
+            },
+            del(id) {
+                this.list.some((item, index, array) => {
+                        if (item.id == id) {
+                            this.list.splice(index,1);
+                            return true;
+                        }
+                    }
+                )
+            },
+            search(keyWords){
+
+                var searchList=[];
+                this.list.forEach((item) => {
+                        if (item.goodsName.indexOf(keyWords)!=-1) {
+                            searchList.push(item);
+                        }
+                    }
+                )
+                return searchList;
+            }
+        },
+        filters:{
+            dateFilter:(date)=>{
+
+                    var year=date.getFullYear();
+                    var month=date.getMonth().toString().padStart(2,'0');
+                    var day=date.getDay().toString().padStart(2,'0');
+                    var hh=date.getHours().toString().padStart(2,'0');
+                    var mm=date.getMinutes().toString().padStart(2,'0');
+                    var ss=date.getSeconds().toString().padStart(2,'0');
+
+                    return `${year}年${month}月${day}日 ${hh}时${mm}分${ss}秒`;
+            }
+        },
+
+    });
+    var vm2=new Vue({
+        el:"#app2",
+        data:{
+          msg:'4564544444444444444asdasasd',
+        },
+        directives:{
+            'fontweight':{
+                bind: function(el,binding){
+                    console.log(binding);
+                    el.style.fontWeight=binding.value;
+                },
+            },
+            'fontsize':{
+                bind:function (el,binding) {//等同于同时写到bind和update量里面
+                    $(el).css('fontSize',binding.value+"px")
+                }
+            }
+        }
+    })
+</script>
+</html>

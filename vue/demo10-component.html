@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+    <meta charset="utf-8" name="viewport" content="width=device-width,initial-scale=1, user-scalable=no"/>
+    <title>首页</title>
+</head>
+<script src="jquery-3.3.1.min.js"></script>
+<script src="bootstrap/js/bootstrap.js"></script>
+<script src="vue.min.js"></script>
+<link rel="stylesheet" href="animate.css">
+<body>
+<div id="app">
+    <!--驼峰命名解析-->
+    <my-com1></my-com1>
+    <my-com2></my-com2>
+    <my-com3></my-com3>
+    <hr>
+    <login v-if="flag"></login>
+    <register v-else="flag"></register>
+    <!--vue提供component占位符-->
+    <component :is="componentid"></component>
+</div>
+</body>
+<template id="temp1">
+    <div>
+        <h3>这是通过template标签定义的组件</h3>
+        <span>ddddddddddd</span>
+    </div>
+</template>
+<template id="login">
+    <div>
+        <h1>这是私有得login组件</h1>
+        <h2>{{msg}}</h2>
+        <button class="btn btn-default" @click="increment">{{count}}</button>
+    </div>
+</template>
+<script>
+    /*  //使用extend创建全局组件
+      var com1 = Vue.extend({
+          template: "<h3>这是一个vue组件</h3>",//通过template属性，制定组件要展示的html结构
+      })
+      Vue.component("myCom1", com1);*/
+    Vue.component("myCom1", Vue.extend({
+        template: "<h3>这是一个vue组件</h3>",//通过template属性，制定组件要展示的html结构
+    }))
+
+    Vue.component("myCom2", {
+        template: "<div><h3>这是component组件</h3><span>ssssssssss</span></div>"//组件只能有一个根元素
+    })
+
+
+    Vue.component("myCom3", {
+        template: '#temp1'
+    })
+
+
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            flag: true,
+            componentid: "login"
+        },
+        components: {
+            login: {
+                /*template:"<h1>这是私有得login组件</h1>"*/
+                template: "#login",
+                //组件data,返回一个object,此object最好不定义为全局，不然多个组件公用一个object
+                data: function () {
+                    return {
+                        msg: "组件自己定义的数据",
+                        count: 1
+                    }
+                },
+                methods: {
+                    increment() {
+                        this.count++;
+                        console.log(vm.flag)
+                        vm.flag = !vm.flag;
+                        vm.componentid='register';
+                    }
+                }
+            },
+            register: {
+                template: "<h3>注册</h3>"
+            }
+        }
+    })
+</script>
+</html>
